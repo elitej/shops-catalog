@@ -8,28 +8,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.testwork.model.Shop;
 import ru.testwork.service.ShopService;
 
 @Controller
-public class MainController {
+@RequestMapping("/shops")
+public class ShopsCatalogController {
 
-    private static Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static Logger logger = LoggerFactory.getLogger(ShopsCatalogController.class);
 
     private ShopService shopService;
 
     @Autowired
-    public MainController(ShopService shopService) {
+    public ShopsCatalogController(ShopService shopService) {
         this.shopService = shopService;
     }
 
-    // TODO: 14.04.2017 write home.jsp
-    @GetMapping("/")
-    public String showHomePage() {
-        return "redirect:shops/1";
-    }
-
-    @GetMapping("shops/{pageNumber}")
+    @GetMapping("/{pageNumber}")
     public String showShopsForPage(@PathVariable int pageNumber, Model model) {
         logger.debug("showShopsForPage is executed, pageNumber = \"{}\"", pageNumber);
 
@@ -40,7 +36,6 @@ public class MainController {
         model.addAttribute("currentIndex", current);
         model.addAttribute("totalPages", page.getTotalPages());
 
-        return "main";
+        return "shops";
     }
-
 }

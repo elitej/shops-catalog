@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/shops/1">
                 <span class="label label-bg">Catalog</span>
             </a>
         </div>

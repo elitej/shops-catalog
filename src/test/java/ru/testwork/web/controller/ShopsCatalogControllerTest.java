@@ -25,7 +25,7 @@ import java.util.Arrays;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:spring/spring-test-mvc.xml")
 @WebAppConfiguration
-public class MainControllerTest {
+public class ShopsCatalogControllerTest {
 
     private MockMvc mockMvc;
 
@@ -42,13 +42,6 @@ public class MainControllerTest {
     }
 
     @Test
-    public void showHomePage_ShouldMakeRedirectOn_shops1() throws Exception {
-        mockMvc.perform(get("/"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("shops/1"));
-    }
-
-    @Test
     public void showShopsForPage_ShouldAddShopsToModelAndRenderMainView() throws Exception {
         Page pageMock = Mockito.mock(Page.class);
         when(pageMock.getContent()).thenReturn(Arrays.asList(new Shop(), new Shop()));
@@ -58,8 +51,8 @@ public class MainControllerTest {
 
         mockMvc.perform(get("/shops/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("main"))
-                .andExpect(forwardedUrl("/WEB-INF/views/main.jsp"))
+                .andExpect(view().name("shops"))
+                .andExpect(forwardedUrl("/WEB-INF/views/shops.jsp"))
                 .andExpect(model().attribute("shops", hasSize(2)))
                 .andExpect(model().attribute("currentIndex", 1))
                 .andExpect(model().attribute("totalPages", 1));
