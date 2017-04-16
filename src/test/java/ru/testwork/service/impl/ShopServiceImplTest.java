@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.testwork.exception.ShopNotFoundException;
 import ru.testwork.model.Address;
+import ru.testwork.model.Product;
 import ru.testwork.model.Shop;
 import ru.testwork.repository.ShopRepository;
 import ru.testwork.service.ShopService;
@@ -42,14 +44,16 @@ public class ShopServiceImplTest {
 
     @Test
     public void findById_ShouldReturnShopWithTheSpecifiedId() {
-        Shop shop = new Shop(3L, "testName", new Address("testCity", "testStreet"));
+        Shop shop = new Shop(3L, "testName", new Address("testCity", "testStreet"),
+                Arrays.asList(new Product(), new Product()));
         when(shopRepositoryMock.findOne(3L)).thenReturn(shop);
 
-        Shop returnedShop = shopService.findById(3L);
+        Shop returnedShop = shopService.findById(3L, true);
         assertEquals(new Long(3), returnedShop.getId());
         assertEquals("testName", returnedShop.getName());
         assertEquals("testCity", returnedShop.getAddress().getCity());
         assertEquals("testStreet", returnedShop.getAddress().getStreet());
+        assertEquals(2, returnedShop.getProducts().size());
 
         verify(shopRepositoryMock, times(1)).findOne(3L);
         verifyNoMoreInteractions(shopRepositoryMock);
@@ -58,7 +62,7 @@ public class ShopServiceImplTest {
     @Test(expected = ShopNotFoundException.class)
     public void findById_ShopEntryNotFound_ShouldThrowException() {
         when(shopRepositoryMock.findOne(5L)).thenReturn(null);
-        shopService.findById(5L);
+        shopService.findById(5L, true);
     }
 
     @Test

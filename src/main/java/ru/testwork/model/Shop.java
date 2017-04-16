@@ -22,7 +22,7 @@ public class Shop {
     })
     private Address address;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "shops_products",
             joinColumns = @JoinColumn(name = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -35,6 +35,13 @@ public class Shop {
         this.id = id;
         this.name = name;
         this.address = address;
+    }
+
+    public Shop(Long id, String name, Address address, List<Product> products) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.products = products;
     }
 
     public Long getId() {

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.testwork.exception.ShopNotFoundException;
+import ru.testwork.model.Product;
 import ru.testwork.model.Shop;
 import ru.testwork.repository.ShopRepository;
 import ru.testwork.service.ShopService;
@@ -14,7 +15,6 @@ import ru.testwork.service.ShopService;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class ShopServiceImpl implements ShopService {
 
     private static final int PAGE_SIZE = 10;
@@ -26,9 +26,15 @@ public class ShopServiceImpl implements ShopService {
         this.shopRepository = shopRepository;
     }
 
+    @Transactional
     @Override
-    public Shop findById(long id) {
-        return checkForNullShop(shopRepository.findOne(id), id);
+    public Shop findById(long id, boolean fetchEagerly) {
+        Shop shop = shopRepository.findOne(id);
+        checkForNullShop(shop, id);
+        if (fetchEagerly) {
+            shop.getProducts().size();
+        }
+        return shop;
     }
 
     @Override

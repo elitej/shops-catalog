@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    Product findById(long id);
+    Product findById(long id, boolean fetchEagerly);
 
     List<Product> findForPage(int pageNumber);
 }

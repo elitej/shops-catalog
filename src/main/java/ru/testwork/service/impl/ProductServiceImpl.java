@@ -13,7 +13,6 @@ import ru.testwork.service.ProductService;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class ProductServiceImpl implements ProductService {
 
     private static final int PAGE_SIZE = 10;
@@ -25,9 +24,15 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     @Override
-    public Product findById(long id) {
-        return checkForNullItem(productRepository.findOne(id), id);
+    public Product findById(long id, boolean fetchEagerly) {
+        Product product = productRepository.findOne(id);
+        checkForNullProduct(product, id);
+        if (fetchEagerly) {
+            product.getShops().size();
+        }
+        return product;
     }
 
     @Override
@@ -36,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll(request).getContent();
     }
 
-    private Product checkForNullItem(Product product, long id) {
+    private Product checkForNullProduct(Product product, long id) {
         if (product == null)
             throw new ProductNotFoundException(id);
         return product;

@@ -29,8 +29,9 @@ public class ShopController {
     public String showShopById(@PathVariable long shopId, Model model) {
         logger.debug("showShopById is executed, shopId = \"{}\"", shopId);
 
-        Shop shop = shopService.findById(shopId);
+        Shop shop = shopService.findById(shopId, true);
         model.addAttribute("shop", shop);
+        model.addAttribute("products", shop.getProducts());
         return "shop";
     }
 

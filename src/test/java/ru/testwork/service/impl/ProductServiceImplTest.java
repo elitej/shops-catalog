@@ -14,6 +14,8 @@ import ru.testwork.model.Shop;
 import ru.testwork.repository.ProductRepository;
 import ru.testwork.service.ProductService;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -36,12 +38,13 @@ public class ProductServiceImplTest {
 
     @Test
     public void findById_ShouldReturnItemWithTheSpecifiedId() {
-        Product product = new Product(2L, "testName");
+        Product product = new Product(2L, "testName", Arrays.asList(new Shop(), new Shop()));
         when(productRepositoryMock.findOne(2L)).thenReturn(product);
 
-        Product returnedProduct = productService.findById(2L);
+        Product returnedProduct = productService.findById(2L, true);
         assertEquals(new Long(2), returnedProduct.getId());
         assertEquals("testName", returnedProduct.getName());
+        assertEquals(2, returnedProduct.getShops().size());
 
         verify(productRepositoryMock, times(1)).findOne(2L);
         verifyNoMoreInteractions(productRepositoryMock);
@@ -50,6 +53,6 @@ public class ProductServiceImplTest {
     @Test(expected = ProductNotFoundException.class)
     public void findById_ShopEntryNotFound_ShouldThrowException() {
         when(productRepositoryMock.findOne(5L)).thenReturn(null);
-        productService.findById(5L);
+        productService.findById(5L, true);
     }
 }

@@ -1,10 +1,13 @@
 package ru.testwork.web.controller;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.testwork.exception.ShopNotFoundException;
+import ru.testwork.model.Address;
+import ru.testwork.model.Product;
 import ru.testwork.model.Shop;
 import ru.testwork.service.ShopService;
 
@@ -42,14 +47,28 @@ public class ShopControllerTest {
 
     @Test
     public void showShop_ShouldAddShopToModelAndRenderShopView() throws Exception {
-        when(shopServiceMock.findById(1)).thenReturn(new Shop());
+        Product product1 = new Product(5L, "Bread");
+        Product product2 = new Product(6L, "Tomato");
+        Shop shop = new Shop(1L, "Example Shop", new Address(), Arrays.asList(product1, product2));
+        when(shopServiceMock.findById(1, true)).thenReturn(shop);
 
         mockMvc.perform(get("/shop/{shopId}", 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("shop"))
-                .andExpect(forwardedUrl("/WEB-INF/views/shop.jsp"));
-        // TODO: 12.04.2017 Add checks for shop properties
-        verify(shopServiceMock, times(1)).findById(1);
+                .andExpect(forwardedUrl("/WEB-INF/views/shop.jsp"))
+                .andExpect(model().attribute("shop", hasProperty("id", is(1L))))
+                .andExpect(model().attribute("shop", hasProperty("name", is("Example Shop"))))
+                .andExpect(model().attribute("products", hasSize(2)))
+                .andExpect(model().attribute("products", hasItem(
+                        allOf(
+                                hasProperty("id", is(5L)),
+                                hasProperty("name", is("Bread"))))))
+                .andExpect(model().attribute("products", hasItem(
+                        allOf(
+                                hasProperty("id", is(6L)),
+                                hasProperty("name", is("Tomato"))))));
+
+        verify(shopServiceMock, times(1)).findById(1, true);
         verifyNoMoreInteractions(shopServiceMock);
     }
 
@@ -69,7 +88,7 @@ public class ShopControllerTest {
     @Test
     public void showShop_ShopEntryNotFound_ShouldRender404View() throws Exception {
         ShopNotFoundException exception = new ShopNotFoundException(1);
-        when(shopServiceMock.findById(1)).thenThrow(exception);
+        when(shopServiceMock.findById(1, true)).thenThrow(exception);
 
         mockMvc.perform(get("/shop/{shopId}", 1))
                 .andExpect(status().isOk())
@@ -77,7 +96,7 @@ public class ShopControllerTest {
                 .andExpect(forwardedUrl("/WEB-INF/views/error/404.jsp"))
                 .andExpect(model().attribute("message", exception.getMessage()));
 
-        verify(shopServiceMock, times(1)).findById(1);
+        verify(shopServiceMock, times(1)).findById(1, true);
         verifyNoMoreInteractions(shopServiceMock);
     }
 

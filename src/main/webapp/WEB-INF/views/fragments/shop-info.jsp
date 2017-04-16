@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${shop.products}" var="product" varStatus="loop">
+        <c:forEach items="${products}" var="product" varStatus="loop">
             <tr>
                 <td scope="row">${loop.index + 1}</td>
                 <td><a href="${pageContext.request.contextPath}/product/${product.id}">${product.name}</a></td>

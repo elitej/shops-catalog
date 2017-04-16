@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ShopService {
 
-    Shop findById(long id);
+    Shop findById(long id, boolean fetchEagerly);
 
     List<Shop> findByName(String name);
 

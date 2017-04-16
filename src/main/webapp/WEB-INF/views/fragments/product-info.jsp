@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="panel panel-primary">
-    <div class="panel-heading">${product.name}</div>
+    <div class="panel-heading"><b>${product.name}</b></div>
     <div class="panel-body">
         <p><b>Producer :</b> ${product.producer.name}</p>
         <p>BlaBlaBla BlaBlaBla BlaBlaBla</p>
