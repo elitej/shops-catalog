@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                Catalog
+                <span class="label label-bg">Catalog</span>
             </a>
         </div>
         <form class="navbar-form navbar-right" role="search">

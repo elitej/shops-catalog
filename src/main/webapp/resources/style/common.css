@@ -1,0 +1,24 @@
+.body {
+    color: #1a00d0 !important;
+}
+.navbar-default {
+    border-color: #1908d0 !important;
+}
+
+.label {
+    font-size: 95% !important;
+}
+
+.label-bg {
+    background-color: #3326d0;
+}
+
+.btn-default {
+    color: #1a00d0 !important;
+    border-color: #1908d0 !important;
+}
+
+.form-control {
+    color: #1a00d0 !important;
+    border: 1px solid #1908d0 !important;
+}

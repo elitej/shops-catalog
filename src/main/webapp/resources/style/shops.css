@@ -1,0 +1,25 @@
+.catalog {
+    padding: 10px 30px;
+}
+
+.catalog a {
+    color: #1a00d0
+;
+}
+
+.thumbnail {
+    padding: 5px 0 0 15px !important;
+    background-color: #8fe6ff !important;
+    border: 1px solid #1908d0 !important;
+}
+
+.pager li>a, .pager li>span {
+    color: #1a00d0 !important;
+    background-color: #fcfcfc !important;
+    border: 1px solid #1908d0 !important;
+    border-radius: 10px !important;
+}
+
+.next-aligning {
+    padding: 5px 26px !important;
+}

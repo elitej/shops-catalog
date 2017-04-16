@@ -15,10 +15,10 @@
         </c:choose>
         <c:choose>
             <c:when test="${currentIndex == totalPages}">
-                <li><a href="">Next</a></li>
+                <li><a href="" class="next-aligning">Next</a></li>
             </c:when>
             <c:otherwise>
-                <li><a href="${nextUrl}">Next</a></li>
+                <li><a href="${nextUrl}" class="next-aligning">Next</a></li>
             </c:otherwise>
         </c:choose>
     </ul>
