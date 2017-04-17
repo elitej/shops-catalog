@@ -18,7 +18,7 @@
         <c:forEach items="${shops}" var="shop" varStatus="loop">
             <tr>
                 <td scope="row">${loop.index + 1}</td>
-                <td><a href="${pageContext.request.contextPath}/shop/${shop.id}">${shop.name}</a></td>
+                <td><a href="/shop/${shop.id}">${shop.name}</a></td>
                 <td>c. ${shop.address.city}, st. ${shop.address.street}</td>
             </tr>
         </c:forEach>

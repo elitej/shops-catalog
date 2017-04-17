@@ -38,9 +38,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> findByName(String name) {
-        PageRequest request = new PageRequest(0, PAGE_SIZE, Sort.Direction.ASC, "id");
-        return shopRepository.findByName(name, request);
+    public Page<Shop> findByName(String name, int pageNumber) {
+        PageRequest request = new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "id");
+        return shopRepository.findByNameContainingIgnoreCase(name, request);
     }
 
     @Override

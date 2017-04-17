@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:url var="prevUrl" value="${pageContext.request.contextPath}/shops/${currentIndex - 1}" />
-<c:url var="nextUrl" value="${pageContext.request.contextPath}/shops/${currentIndex + 1}" />
+<c:url var="prevUrl" value="${param.path}${currentIndex - 1}" />
+<c:url var="nextUrl" value="${param.path}${currentIndex + 1}" />
 
 <nav aria-label="Page navigation">
     <ul class="pager">

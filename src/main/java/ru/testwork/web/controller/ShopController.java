@@ -35,15 +35,6 @@ public class ShopController {
         return "shop";
     }
 
-    @GetMapping("/search/{shopName}")
-    public String showShopByName(@PathVariable String shopName, Model model) {
-        logger.debug("showShopByName is executed, shopName = \"{}\"", shopName);
-
-        List<Shop> shops = shopService.findByName(shopName);
-        model.addAttribute("shops", shops);
-        return "shop";
-    }
-
     @ExceptionHandler(ShopNotFoundException.class)
     public String handleShopNotFoundException(ShopNotFoundException e, Model model) {
         logger.warn("shop with id = \"{}\" not found", e.getId());

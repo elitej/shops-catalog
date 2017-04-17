@@ -7,35 +7,37 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.testwork.model.Shop;
 import ru.testwork.service.ShopService;
 
-@Controller
-@RequestMapping("catalog/shops")
-public class ShopsCatalogController {
+import java.util.List;
 
-    private static Logger logger = LoggerFactory.getLogger(ShopsCatalogController.class);
+@Controller
+@RequestMapping("/search")
+public class SearchController {
+
+    private static Logger logger = LoggerFactory.getLogger(SearchController.class);
 
     private ShopService shopService;
 
     @Autowired
-    public ShopsCatalogController(ShopService shopService) {
+    public SearchController(ShopService shopService) {
         this.shopService = shopService;
     }
 
-    @GetMapping("/{pageNumber}")
-    public String showShopsForPage(@PathVariable int pageNumber, Model model) {
-        logger.debug("showShopsForPage is executed, pageNumber = \"{}\"", pageNumber);
+    @GetMapping
+    public String showShopByName(@RequestParam("shop_name") String shopName,
+                                 @RequestParam("num") int pageNumber, Model model) {
+        logger.debug("showShopByName is executed, shopName = \"{}\"", shopName);
 
-        Page<Shop> page = shopService.findForPage(pageNumber);
+        Page<Shop> page = shopService.findByName(shopName, pageNumber);
         int current = page.getNumber() + 1;
 
         model.addAttribute("shops", page.getContent());
         model.addAttribute("currentIndex", current);
         model.addAttribute("totalPages", page.getTotalPages());
-
-        return "shops";
+        return "search";
     }
 }

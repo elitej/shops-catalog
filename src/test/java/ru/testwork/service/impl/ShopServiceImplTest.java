@@ -71,12 +71,13 @@ public class ShopServiceImplTest {
         Shop shop2 = new Shop(2L, "testName", new Address("testCity2", "testStreet2"));
         PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "id");
         List<Shop> shops = Arrays.asList(shop1, shop2);
-        when(shopRepositoryMock.findByName("testName", request)).thenReturn(shops);
+        when(pageMock.getContent()).thenReturn(shops);
+        when(shopRepositoryMock.findByNameContainingIgnoreCase("testName", request)).thenReturn(pageMock);
 
-        List<Shop> returnedShop = shopService.findByName("testName");
-        assertEquals(shops, returnedShop);
+        Page<Shop> returnedShop = shopService.findByName("testName", 1);
+        assertEquals(shops, returnedShop.getContent());
 
-        verify(shopRepositoryMock, times(1)).findByName("testName", request);
+        verify(shopRepositoryMock, times(1)).findByNameContainingIgnoreCase("testName", request);
         verifyNoMoreInteractions(shopRepositoryMock);
     }
 

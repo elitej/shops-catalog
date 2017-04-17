@@ -73,19 +73,6 @@ public class ShopControllerTest {
     }
 
     @Test
-    public void showShopByName() throws Exception {
-        when(shopServiceMock.findByName("A")).thenReturn(Arrays.asList(new Shop(), new Shop()));
-
-        mockMvc.perform(get("/shop/search/{shopName}", "A"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("shop"))
-                .andExpect(forwardedUrl("/WEB-INF/views/shop.jsp"))
-                .andExpect(model().attribute("shops", hasSize(2)));
-        verify(shopServiceMock, times(1)).findByName("A");
-        verifyNoMoreInteractions(shopServiceMock);
-    }
-
-    @Test
     public void showShop_ShopEntryNotFound_ShouldRender404View() throws Exception {
         ShopNotFoundException exception = new ShopNotFoundException(1);
         when(shopServiceMock.findById(1, true)).thenThrow(exception);

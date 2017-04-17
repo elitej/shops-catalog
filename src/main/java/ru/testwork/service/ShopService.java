@@ -9,7 +9,7 @@ public interface ShopService {
 
     Shop findById(long id, boolean fetchEagerly);
 
-    List<Shop> findByName(String name);
+    Page<Shop> findByName(String name, int pageNumber);
 
     Page<Shop> findForPage(int pageNumber);
 
